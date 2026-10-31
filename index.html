@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#123b70">
+<meta name="description" content="G6 Business Manager - sales, stock, expenses and billing">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<title>G6 Business Manager</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Noto Sans Devanagari",sans-serif;color:#17243a;background:#f3f6fb}
+*{box-sizing:border-box}body{margin:0}header{background:#123b70;color:#fff;padding:20px 18px 24px;border-radius:0 0 24px 24px}
+.brand{display:flex;align-items:center;gap:12px}.logo{width:48px;height:48px;border-radius:15px;background:#fff;color:#123b70;display:grid;place-items:center;font-weight:900;font-size:23px}
+h1{font-size:19px;margin:0}header p{margin:4px 0 0;color:#d9e7fb;font-size:12px}
+main{max-width:900px;margin:auto;padding:16px}.welcome{font-weight:700;margin:5px 0 14px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.tile,.panel{background:#fff;border:1px solid #e5eaf2;border-radius:17px;padding:15px;box-shadow:0 4px 16px #1d3b6410}
+.tile .ico{font-size:24px}.tile strong{display:block;margin-top:8px;font-size:14px}.tile span{font-size:12px;color:#6c7890}
+.panel{margin-top:14px}.panel h2{font-size:16px;margin:0 0 12px}.metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.metric{background:#f4f7fc;border-radius:12px;padding:12px}.metric small{display:block;color:#69758b}.metric b{font-size:20px}
+.actions{display:flex;gap:8px;flex-wrap:wrap}button{border:0;border-radius:11px;background:#1764b5;color:white;padding:11px 14px;font-weight:700;font-size:13px}button.secondary{background:#e8eff9;color:#174477}
+input,select{width:100%;padding:11px;border:1px solid #d7dfeb;border-radius:10px;font:inherit;margin:5px 0 10px;background:#fff}
+label{font-size:12px;color:#526079;font-weight:650}form{display:grid;grid-template-columns:1fr 1fr;gap:8px}form .full{grid-column:1/-1}
+table{width:100%;border-collapse:collapse;font-size:12px}td,th{text-align:left;padding:9px 5px;border-bottom:1px solid #edf0f5}th{color:#68758a}
+footer{text-align:center;color:#7c8799;font-size:11px;padding:24px}
+@media(min-width:650px){.grid{grid-template-columns:repeat(4,1fr)}.metrics{grid-template-columns:repeat(4,1fr)}}
+</style>
+</head>
+<body>
+<header><div class="brand"><div class="logo">G6</div><div><h1>G6 Business Manager</h1><p>आपके कारोबार का पूरा हिसाब</p></div></div></header>
+<main>
+<div class="welcome">नमस्ते! आज का कारोबार</div>
+<section class="metrics">
+<div class="metric"><small>कुल बिक्री</small><b id="salesTotal">₹0</b></div>
+<div class="metric"><small>कुल खरीद</small><b id="purchaseTotal">₹0</b></div>
+<div class="metric"><small>कुल खर्च</small><b id="expenseTotal">₹0</b></div>
+<div class="metric"><small>बिक्री − खरीद − खर्च</small><b id="profitTotal">₹0</b></div>
+</section>
+<section class="grid" style="margin-top:14px">
+<div class="tile"><div class="ico">🧾</div><strong>बिलिंग</strong><span>GST / बिना GST बिल</span></div>
+<div class="tile"><div class="ico">📦</div><strong>स्टॉक</strong><span>माल का रिकॉर्ड</span></div>
+<div class="tile"><div class="ico">👥</div><strong>ग्राहक</strong><span>नाम और बकाया</span></div>
+<div class="tile"><div class="ico">📊</div><strong>रिपोर्ट</strong><span>कारोबार का सारांश</span></div>
+</section>
+<section class="panel">
+<h2>नई एंट्री जोड़ें</h2>
+<form id="entryForm">
+<div><label for="kind">एंट्री का प्रकार</label><select id="kind"><option value="sale">बिक्री</option><option value="purchase">खरीद</option><option value="expense">खर्च</option></select></div>
+<div><label for="amount">रकम (₹)</label><input id="amount" type="number" min="1" step="0.01" required placeholder="जैसे 1500"></div>
+<div class="full"><label for="note">विवरण</label><input id="note" maxlength="80" placeholder="ग्राहक / सामान / खर्च का नाम"></div>
+<div class="full actions"><button type="submit">एंट्री सेव करें</button><button class="secondary" type="button" id="exportBtn">CSV रिपोर्ट डाउनलोड</button></div>
+</form>
+</section>
+<section class="panel">
+<h2>हाल की एंट्री</h2>
+<table><thead><tr><th>प्रकार</th><th>विवरण</th><th>रकम</th></tr></thead><tbody id="entries"><tr><td colspan="3">अभी कोई एंट्री नहीं है</td></tr></tbody></table>
+</section>
+<section class="panel">
+<h2>ऐप इंस्टॉल करें</h2>
+<p style="font-size:13px;color:#68758a">जब यह ऐप सुरक्षित HTTPS वेबसाइट पर उपलब्ध होगा, तो Chrome के मेन्यू से “Install app” या “Add to Home screen” चुनकर इसे मोबाइल की होम स्क्रीन पर आइकन के रूप में जोड़ सकते हैं।</p>
+<div class="actions"><button class="secondary" id="installBtn" hidden>Install App</button></div>
+</section>
+</main><footer>G6 Business Manager · शुरुआती संस्करण · डेटा इसी ब्राउज़र में सेव होता है</footer>
+<script>
+const KEY='g6bm_entries_v1';let data=JSON.parse(localStorage.getItem(KEY)||'[]');
+const money=n=>'₹'+Number(n||0).toLocaleString('en-IN',{maximumFractionDigits:2});
+function render(){
+ const sums={sale:0,purchase:0,expense:0};data.forEach(x=>sums[x.kind]+=Number(x.amount));
+ salesTotal.textContent=money(sums.sale);purchaseTotal.textContent=money(sums.purchase);expenseTotal.textContent=money(sums.expense);
+ profitTotal.textContent=money(sums.sale-sums.purchase-sums.expense);
+ entries.innerHTML=data.length?data.slice().reverse().slice(0,12).map(x=>`<tr><td>${({sale:'बिक्री',purchase:'खरीद',expense:'खर्च'})[x.kind]}</td><td>${escapeHtml(x.note||'—')}</td><td>${money(x.amount)}</td></tr>`).join(''):'<tr><td colspan="3">अभी कोई एंट्री नहीं है</td></tr>';
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+entryForm.addEventListener('submit',e=>{e.preventDefault();data.push({kind:kind.value,amount:Number(amount.value),note:note.value,date:new Date().toISOString()});localStorage.setItem(KEY,JSON.stringify(data));entryForm.reset();render();});
+exportBtn.addEventListener('click',()=>{const rows=[['Type','Description','Amount','Date'],...data.map(x=>[x.kind,x.note,x.amount,x.date])];const csv=rows.map(r=>r.map(v=>'"'+String(v??'').replaceAll('"','""')+'"').join(',')).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}));a.download='G6-business-report.csv';a.click();URL.revokeObjectURL(a.href);});
+let promptEvent;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();promptEvent=e;installBtn.hidden=false;});installBtn.addEventListener('click',async()=>{if(promptEvent){promptEvent.prompt();await promptEvent.userChoice;promptEvent=null;installBtn.hidden=true;}});
+if('serviceWorker' in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+render();
+</script>
+</body></html>
